@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import firebase from '../database/Firebase'
 
-const LoginScreen = () => {
+
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errMsg, setErrMsg] = useState('')
@@ -10,13 +11,11 @@ const LoginScreen = () => {
   const handleLogin = () => {
       setLoading(true)
       setTimeout(() => {
-          firebase.auth()
-          .signInWithEmailAndPassword(email, password)
-          .then(setLoading(false))
-          .catch(error => {
-            console.log(error)
-            setErrMsg(error.message)
-          })    
+          firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(setLoading(false))
+            .catch(error => {
+              setErrMsg(error.message)
+            })    
       }, 1000);
   }
   return (
@@ -49,9 +48,9 @@ const LoginScreen = () => {
     <TouchableOpacity style={styles.button} onPress={handleLogin}>
       <Text style={{ color: '#FFF', fontWeight: '500' }}>Sign in</Text>
     </TouchableOpacity>
-    <TouchableOpacity  style={{ alignSelf: 'center', marginTop: 30 }}>
+    <TouchableOpacity  style={{ alignSelf: 'center', marginTop: 30 }} onPress={()=>navigation.navigate('Signup')}>
       <Text style={{ color: '#414959', fontSize: 14 }}>
-          สมัครสมาชิก <Text style={{ fontWeight: '500', color: '#E9446A'}}>
+          สมัครสมาชิกใหม่ <Text style={{ fontWeight: '500', color: '#E9446A'}}>
               Sign up
           </Text>
       </Text>

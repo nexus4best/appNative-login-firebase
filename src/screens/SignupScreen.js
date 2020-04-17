@@ -1,20 +1,23 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
-import * as firebase from 'firebase'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
+import firebase from '../database/Firebase'
 
-const LoginScreen = () => {
+const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errMsg, setErrMsg] = useState('')
   const [loading, setLoading] = useState(false)
-  const handleLogin = () => {
+  const handleSignUp = () => {
       setLoading(true)
       setTimeout(() => {
           firebase.auth()
-          .signInWithEmailAndPassword(email, password)
+          .createUserWithEmailAndPassword(email, password)
           .then(setLoading(false))
-          .catch(error => setErrMsg(error.message))    
-      }, 3000);
+          .catch(error => {
+            //console.log(error)
+            setErrMsg(error.message)
+          })    
+      }, 1000);
   }
   return (
   <View style={styles.container}>
@@ -43,13 +46,13 @@ const LoginScreen = () => {
       </View>
     </View>
 
-    <TouchableOpacity style={styles.button} onPress={handleLogin}>
-      <Text style={{ color: '#FFF', fontWeight: '500' }}>Sign in</Text>
+    <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+      <Text style={{ color: '#FFF', fontWeight: '500' }}>Sign up</Text>
     </TouchableOpacity>
-    <TouchableOpacity  style={{ alignSelf: 'center', marginTop: 30 }}>
+    <TouchableOpacity  style={{ alignSelf: 'center', marginTop: 30 }} onPress={()=>navigation.navigate('Login')}>
       <Text style={{ color: '#414959', fontSize: 14 }}>
-          สมัครสมาชิก <Text style={{ fontWeight: '500', color: '#E9446A'}}>
-              Sign up
+          เป็นสมาชิกอยู่แล้ว <Text style={{ fontWeight: '500', color: '#E9446A'}}>
+              Sign In
           </Text>
       </Text>
     </TouchableOpacity>
@@ -60,7 +63,7 @@ const LoginScreen = () => {
   )
 }
 
-export default LoginScreen
+export default SignupScreen
 
 const styles = StyleSheet.create({
   container: {
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
   },
   button: {
       marginHorizontal: 30,
-      backgroundColor: '#E9446A',
+      backgroundColor: '#4096EE',
       borderRadius: 5,
       height: 50,
       alignItems: 'center',

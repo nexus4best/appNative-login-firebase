@@ -1,20 +1,20 @@
 import React, { useContext } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
-import firebase from '../database/Firebase'
-import AuthContext from '../context/AuthContext'
+import Firebase from '../../database/Firebase'
+import AuthContext from '../../context/AuthContext'
 
-const HomeScreen = () => {
+const ProfileScreen = () => {
     const user = useContext(AuthContext)
-    async function logOut() {
+    async function Logout() {
         try {
-            await firebase.auth().signOut()
-            console.log('Logout ok')
+            await Firebase.auth().signOut()
         } catch (e) {
             console.log(e)
         }
     }
     return (
         <View style={styles.container}>
+            <Text>Name : {user.displayName}</Text>
             <Text>Email : {user.email}</Text>
             <Text>UID:  {user.uid}</Text>
             <Text>createdAt : {user.metadata.creationTime}</Text>
@@ -22,14 +22,15 @@ const HomeScreen = () => {
             <View style={styles.button}>
                 <Button 
                     title="Logout" 
-                    onPress={logOut} 
+                    onPress={Logout} 
                 />
-            </View>
+            </View>                
         </View>
     )
+    
 }
 
-export default HomeScreen
+export default ProfileScreen
 
 const styles = StyleSheet.create({
     container: {
